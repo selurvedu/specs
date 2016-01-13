@@ -21,6 +21,15 @@ BuildRequires:  make
 BuildRequires:  openssl-devel
 BuildRequires:  ruby
 BuildRequires:  sqlite-devel
+Requires:       urw-fonts
+
+# Upstream issue #12713
+# https://github.com/ariya/phantomjs/issues/12713
+Patch0:         phantomjs-python3-udis86-itab.patch
+# Upstream issues #13265 #13518
+# https://github.com/ariya/phantomjs/issues/13265
+# https://github.com/ariya/phantomjs/issues/13518
+Patch1:         phantomjs-gcc5-compile-fix.patch
 
 %description
 PhantomJS is a headless WebKit with JavaScript API. It has fast and
@@ -29,29 +38,31 @@ JSON, Canvas, and SVG. PhantomJS is created by Ariya Hidayat.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
-./build.sh --confirm
+./build.sh --confirm %(smp=%{?_smp_mflags}; echo ${smp/-j/--jobs })
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}/%{name}/examples
-cp bin/%{name} %{buildroot}%{_bindir}/%{name}
-cp examples/* %{buildroot}%{_datadir}/%{name}/examples/
-cp CONTRIBUTING.md %{buildroot}%{_datadir}/%{name}/
-cp ChangeLog %{buildroot}%{_datadir}/%{name}/
-cp LICENSE.BSD %{buildroot}%{_datadir}/%{name}/
-cp README.md %{buildroot}%{_datadir}/%{name}/
+install -Dm 0755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 %files
-%defattr(0444,root,root)
-%attr(0555,root,root)%{_bindir}/%{name}
-%{_datadir}/%{name}/
+%defattr(-,root,root)
+%license LICENSE.BSD
+%doc ChangeLog README.md examples/
+%{_bindir}/%{name}
 
 %changelog
 * Wed Jan 13 2016 selurvedu <selurvedu@yandex.com> 2.0.0-2
 - Reformat and reorder spec header and description,
   add "URL", remove "Packager"
+- Use "--jobs" in "build" section
+- Add patches for GCC 5 and Python 3
+- Add "urw-fonts" dependency to fix rendering
+  of non-Latin symbols
+- Update "install" and "files" sections (thanks, Alexei)
+- Don't bundle CONTRIBUTING.md
 
 * Sat May 9 2015 Frankie Dintino <fdintino@gmail.com>
 - updated to version 2.0, added BuildRequires directives
