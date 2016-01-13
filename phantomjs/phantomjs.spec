@@ -1,36 +1,31 @@
-%define name	phantomjs
-%define version	2.0.0
-%define release 1
+Name:           phantomjs
+Version:        2.0.0
+Release:        2%{?dist}
+Summary:        A headless WebKit with JavaScript API
+Group:          Utilities/Misc
+License:        BSD
+URL:            http://phantomjs.org/
+Source:         https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
 
-Summary:	a headless WebKit with JavaScript API
-Name:		%{name}
-Version:	%{version}
-License:	BSD
-Release:	%{release}
-Packager:	Matthew Barr <mbarr@snap-interactive.com>
-Group:		Utilities/Misc
-BuildRoot:  %{_topdir}/BUILDROOT/
-Source:		https://bitbucket.org/ariya/phantomjs/downloads/%{name}-%{version}-source.zip
-
-BuildRequires: gcc
-BuildRequires: gcc-c++
-BuildRequires: make
-BuildRequires: flex
-BuildRequires: bison
-BuildRequires: gperf
-BuildRequires: ruby
-BuildRequires: openssl-devel
-BuildRequires: freetype-devel
-BuildRequires: fontconfig-devel
-BuildRequires: libicu-devel
-BuildRequires: sqlite-devel
-BuildRequires: libpng-devel
-BuildRequires: libjpeg-devel
+BuildRequires:  bison
+BuildRequires:  flex
+BuildRequires:  fontconfig-devel
+BuildRequires:  freetype-devel
+BuildRequires:  gcc
+BuildRequires:  gcc-c++
+BuildRequires:  gperf
+BuildRequires:  libicu-devel
+BuildRequires:  libjpeg-devel
+BuildRequires:  libpng-devel
+BuildRequires:  make
+BuildRequires:  openssl-devel
+BuildRequires:  ruby
+BuildRequires:  sqlite-devel
 
 %description
-PhantomJS is a headless WebKit with JavaScript API. It has fast and native
-support for various web standards: DOM handling, CSS selector, JSON,
-Canvas, and SVG. PhantomJS is created by Ariya Hidayat.
+PhantomJS is a headless WebKit with JavaScript API. It has fast and
+native support for various web standards: DOM handling, CSS selector,
+JSON, Canvas, and SVG. PhantomJS is created by Ariya Hidayat.
 
 %prep
 %setup -q
@@ -54,6 +49,10 @@ cp README.md %{buildroot}%{_datadir}/%{name}/
 %{_datadir}/%{name}/
 
 %changelog
+* Wed Jan 13 2016 selurvedu <selurvedu@yandex.com> 2.0.0-2
+- Reformat and reorder spec header and description,
+  add "URL", remove "Packager"
+
 * Sat May 9 2015 Frankie Dintino <fdintino@gmail.com>
 - updated to version 2.0, added BuildRequires directives
 
