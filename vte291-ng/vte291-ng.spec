@@ -1,6 +1,6 @@
 %global apiver 2.91
 
-Name:           vte291
+Name:           vte291-ng
 Version:        0.42.1
 Release:        1%{?dist}
 Summary:        Terminal emulator library
@@ -14,6 +14,10 @@ Patch0:         0001-widget-Only-show-the-cursor-on-motion-if-moved.patch
 # https://bugzilla.gnome.org/show_bug.cgi?id=711059
 Patch100:       vte291-command-notify.patch
 
+# https://bugzilla.gnome.org/show_bug.cgi?id=679658
+# Patch generated from https://github.com/thestinger/vte-ng
+Patch200:       expose_select_text.patch
+
 BuildRequires:  gettext
 BuildRequires:  pkgconfig(gnutls)
 BuildRequires:  gobject-introspection-devel
@@ -24,12 +28,17 @@ BuildRequires:  vala-tools
 
 # initscripts creates the utmp group
 Requires:       initscripts
-Requires:       vte-profile
+Requires:       %{name}-profile
+
+Conflicts:      vte291
+Provides:       vte291 = %{version}-%{release}
 
 %description
 VTE is a library implementing a terminal emulator widget for GTK+. VTE
 is mainly used in gnome-terminal, but can also be used to embed a
 console/terminal in games, editors, IDEs, etc.
+
+This is a patched version from https://github.com/thestinger/vte-ng
 
 %package        devel
 Summary:        Development files for %{name}
@@ -43,20 +52,23 @@ developing applications that use %{name}.
 # subpackage in the future when we get rid of the vte3 / vte291 split. Yum is
 # notoriously bad when handling noarch obsoletes and insists on installing both
 # of the multilib packages (i686 + x86_64) as the replacement.
-%package -n     vte-profile
+%package -n     %{name}-profile
 Summary:        Profile script for VTE terminal emulator library
 License:        GPLv3+
 # vte.sh was previously part of the vte3 package
 Conflicts:      vte3 < 0.36.1-3
+Conflicts:      vte-profile
+Provides:       vte-profile = %{version}-%{release}
 
-%description -n vte-profile
-The vte-profile package contains a profile.d script for the VTE terminal
+%description -n %{name}-profile
+The %{name}-profile package contains a profile.d script for the VTE terminal
 emulator library.
 
 %prep
 %setup -q -n vte-%{version}
 %patch0 -p1 -b .motion
 %patch100 -p1 -b .command-notify
+%patch200 -p1 -b .expose_select_text
 
 %build
 CFLAGS="%optflags -fPIE -DPIE" \
@@ -95,10 +107,16 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %doc %{_datadir}/gtk-doc/
 %{_datadir}/vala/
 
-%files -n vte-profile
+%files -n %{name}-profile
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
+* Tue Jan 19 2016 selurvedu <selurvedu@yandex.com> - 0.42.1+ng-1
+- Rename vte291 to vte291-ng
+- Add expose_select_text.patch
+  Source: vte-ng 0.42.1 (ff40e5dafa83a4bb394ee755e1a48922d32a3ca3)
+- Add 'Conflicts' and 'Provides' for vte291
+
 * Wed Oct 14 2015 Kalev Lember <klember@redhat.com> - 0.42.1-1
 - Update to 0.42.1
 
