@@ -32,6 +32,9 @@ Patch0:         phantomjs-python3-udis86-itab.patch
 # https://github.com/ariya/phantomjs/issues/13265
 # https://github.com/ariya/phantomjs/issues/13518
 Patch1:         phantomjs-gcc5-compile-fix.patch
+# linux-syscall-support issue #11
+# https://github.com/dengxiang/linux-syscall-support/issues/11
+Patch2:         phantomjs-lss-ppc-mmap2.patch
 
 %description
 PhantomJS is a headless WebKit with JavaScript API. It has fast and
@@ -42,6 +45,7 @@ JSON, Canvas, and SVG. PhantomJS is created by Ariya Hidayat.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 ./build.sh --confirm %(smp=%{?_smp_mflags}; echo ${smp/-j/--jobs })
@@ -63,6 +67,7 @@ install -Dm 0755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 * Wed Jan 20 2016 selurvedu <selurvedu@yandex.com> 2.0.0-3
 - Add "perl(Getopt::Long)" and "python" to build deps
 - Update %files section to support RHEL 6
+- Add patch for linux-syscall-support on PPC
 
 * Wed Jan 13 2016 selurvedu <selurvedu@yandex.com> 2.0.0-2
 - Reformat and reorder spec header and description,

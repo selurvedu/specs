@@ -1,0 +1,17 @@
+--- a/src/breakpad/src/third_party/lss/linux_syscall_support.h	2015-01-24 02:19:52.000000000 +0000
++++ b/src/breakpad/src/third_party/lss/linux_syscall_support.h	2016-01-14 20:08:03.000000000 +0000
+@@ -3043,10 +3043,14 @@ struct kernel_statfs {
+ #if !defined(__ARM_EABI__)
+     LSS_INLINE _syscall1(void*, mmap,              void*, a)
+ #endif
++#if !defined(__PPC__)
+     LSS_INLINE _syscall6(void*, mmap2,             void*, s,
+                          size_t,                   l, int,               p,
+                          int,                      f, int,               d,
+                          off_t,                o)
++#else
++#define sys_mmap2 mmap
++#endif
+     LSS_INLINE _syscall3(int,   _sigaction,        int,   s,
+                          const struct kernel_old_sigaction*,  a,
+                          struct kernel_old_sigaction*,        o)
