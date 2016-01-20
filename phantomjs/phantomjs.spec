@@ -1,6 +1,6 @@
 Name:           phantomjs
 Version:        2.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A headless WebKit with JavaScript API
 Group:          Utilities/Misc
 License:        BSD
@@ -19,6 +19,8 @@ BuildRequires:  libjpeg-devel
 BuildRequires:  libpng-devel
 BuildRequires:  make
 BuildRequires:  openssl-devel
+BuildRequires:  perl(Getopt::Long)
+BuildRequires:  python
 BuildRequires:  ruby
 BuildRequires:  sqlite-devel
 Requires:       urw-fonts
@@ -49,11 +51,19 @@ install -Dm 0755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 %files
 %defattr(-,root,root)
+%if %defined rhel && 0%{?rhel} <= 6
+%define doc_license LICENSE.BSD
+%else
 %license LICENSE.BSD
-%doc ChangeLog README.md examples/
+%endif
+%doc ChangeLog %{?doc_license} README.md examples/
 %{_bindir}/%{name}
 
 %changelog
+* Wed Jan 20 2016 selurvedu <selurvedu@yandex.com> 2.0.0-3
+- Add "perl(Getopt::Long)" and "python" to build deps
+- Update %files section to support RHEL 6
+
 * Wed Jan 13 2016 selurvedu <selurvedu@yandex.com> 2.0.0-2
 - Reformat and reorder spec header and description,
   add "URL", remove "Packager"
