@@ -110,6 +110,10 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
+* Sat Jul 16 2016 selurvedu <selurvedu@yandex.com> - 0.44.2+ng-1
+- Update expose_select_text.patch to be compatible with vte 0.44.2
+  Source: vte-ng 0.44.1b (df5bb2ca5edca23f7a8508f5de63331d85e83907)
+
 * Tue May 10 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.44.2-1
 - Update to 0.44.2
 - Rebase downstream patches and undo unintentional ABI break
