@@ -1,15 +1,13 @@
 %global apiver 2.91
 
 Name:           vte291-ng
-Version:        0.42.1
+Version:        0.44.2
 Release:        1%{?dist}
 Summary:        Terminal emulator library
 
 License:        LGPLv2+
 URL:            http://www.gnome.org/
-Source0:        http://download.gnome.org/sources/vte/0.42/vte-%{version}.tar.xz
-# https://bugzilla.gnome.org/show_bug.cgi?id=688456
-Patch0:         0001-widget-Only-show-the-cursor-on-motion-if-moved.patch
+Source0:        http://download.gnome.org/sources/vte/0.44/vte-%{version}.tar.xz
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=711059
 Patch100:       vte291-command-notify.patch
@@ -32,6 +30,8 @@ Requires:       %{name}-profile
 
 Conflicts:      vte291
 Provides:       vte291 = %{version}-%{release}
+
+Conflicts:      gnome-terminal < 3.20.1-2
 
 %description
 VTE is a library implementing a terminal emulator widget for GTK+. VTE
@@ -66,12 +66,11 @@ emulator library.
 
 %prep
 %setup -q -n vte-%{version}
-%patch0 -p1 -b .motion
 %patch100 -p1 -b .command-notify
 %patch200 -p1 -b .expose_select_text
 
 %build
-CFLAGS="%optflags -fPIE -DPIE" \
+CFLAGS="%optflags -fPIE -DPIE -Wno-nonnull" \
 CXXFLAGS="$CFLAGS" \
 LDFLAGS="$LDFLAGS -Wl,-z,relro -Wl,-z,now -pie" \
 %configure \
@@ -111,6 +110,45 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
+* Tue May 10 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.44.2-1
+- Update to 0.44.2
+- Rebase downstream patches and undo unintentional ABI break
+
+* Mon Apr 11 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.44.1-1
+- Update to 0.44.1
+
+* Tue Mar 22 2016 Kalev Lember <klember@redhat.com> - 0.44.0-1
+- Update to 0.44.0
+
+* Tue Mar 15 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.92-1
+- Update to 0.43.92
+
+* Tue Mar 01 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.91-1
+- Update to 0.43.91
+- Remove BuildRequires on pkgconfig(libpcre2-8)
+
+* Tue Mar 01 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.90-1
+- Update to 0.43.90
+
+* Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.43.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Fri Jan 29 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.2-1
+- Update to 0.43.2
+
+* Fri Jan 29 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.1-1
+- Update to 0.43.1
+- Drop upstreamed patch
+
+* Fri Jan 29 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.43.0-1
+- Update to 0.43.0
+- Add BuildRequires on pkgconfig(libpcre2-8)
+- Disable -Wnonnull
+
+* Thu Jan 28 2016 Debarshi Ray <rishi@fedoraproject.org> - 0.42.3-1
+- Update to 0.42.3
+- Backport upstream patch to fix disappearing lines (GNOME #761097)
+
 * Tue Jan 19 2016 selurvedu <selurvedu@yandex.com> - 0.42.1+ng-1
 - Rename vte291 to vte291-ng
 - Add expose_select_text.patch
