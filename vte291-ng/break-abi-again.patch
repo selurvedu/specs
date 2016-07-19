@@ -1,0 +1,19 @@
+--- b/src/vte/vteterminal.h
++++ a/src/vte/vteterminal.h
+@@ -71,6 +71,7 @@
+ 	void (*child_exited)(VteTerminal* terminal, int status);
+ 	void (*encoding_changed)(VteTerminal* terminal);
+ 	void (*char_size_changed)(VteTerminal* terminal, guint char_width, guint char_height);
++	void (*notification_received)(VteTerminal* terminal, const gchar *summary, const gchar *body);
+ 	void (*window_title_changed)(VteTerminal* terminal);
+ 	void (*icon_title_changed)(VteTerminal* terminal);
+ 	void (*selection_changed)(VteTerminal* terminal);
+@@ -103,8 +104,6 @@
+ 
+ 	void (*bell)(VteTerminal* terminal);
+ 
+-	void (*notification_received)(VteTerminal* terminal, const gchar *summary, const gchar *body);
+-
+         /* Padding for future expansion. */
+         gpointer padding[15];
+ 

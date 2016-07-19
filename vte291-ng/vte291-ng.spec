@@ -2,7 +2,7 @@
 
 Name:           vte291-ng
 Version:        0.44.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Terminal emulator library
 
 License:        LGPLv2+
@@ -11,6 +11,15 @@ Source0:        http://download.gnome.org/sources/vte/0.44/vte-%{version}.tar.xz
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=711059
 Patch100:       vte291-command-notify.patch
+
+# Since version 0.39.90 in Fedora 22, ABI was unintentionally broken
+# in vte291-command-notify.patch. It was fixed in version 0.44.2 in Fedora 24,
+# but not in older Fedora releases, which still have gnome-terminal relying
+# on broken ABI.
+# This patch reverts the fix, thus breaking ABI back for Fedora 22 and 23.
+%if 0%{?fedora} > 21 && 0%{?fedora} < 24
+Patch110:       break-abi-again.patch
+%endif
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=679658
 # Patch generated from https://github.com/thestinger/vte-ng
@@ -31,7 +40,11 @@ Requires:       %{name}-profile
 Conflicts:      vte291
 Provides:       vte291 = %{version}-%{release}
 
+# This Conflicts directive is only necessary on Fedora 24,
+# please see comment for Patch110.
+%if 0%{?fedora} >= 24
 Conflicts:      gnome-terminal < 3.20.1-2
+%endif
 
 %description
 VTE is a library implementing a terminal emulator widget for GTK+. VTE
@@ -67,6 +80,7 @@ emulator library.
 %prep
 %setup -q -n vte-%{version}
 %patch100 -p1 -b .command-notify
+%patch110 -p1 -b .break-abi-again
 %patch200 -p1 -b .expose_select_text
 
 %build
@@ -110,6 +124,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
+* Wed Jul 20 2016 selurvedu <selurvedu@yandex.com> - 0.44.2+ng-2
+- Add compatibility patch for broken ABI in Fedora 22 and 23
+
 * Sat Jul 16 2016 selurvedu <selurvedu@yandex.com> - 0.44.2+ng-1
 - Update expose_select_text.patch to be compatible with vte 0.44.2
   Source: vte-ng 0.44.1b (df5bb2ca5edca23f7a8508f5de63331d85e83907)
