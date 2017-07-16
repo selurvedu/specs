@@ -25,6 +25,10 @@ BuildRequires:	systemd-devel
 BuildRequires:	libudev-devel
 %endif
 
+# Upstream issue #59
+# https://github.com/IgnorantGuru/udevil/issues/59
+Patch0:         udevil-0.4.4-stat.patch
+
 %description
 udevil is a command line Linux program which mounts and unmounts
 removable devices without a password, shows device info, and monitors
@@ -33,7 +37,11 @@ ssh:// and WebDAV URLs, and tmpfs/ramfs filesystems
 
 %prep
 %setup -q
-sed -i 's/-o root -g root -m 4755//g' src/Makefile.in
+%patch0
+sed -i 's/-o root -g root -m 4755//g' src/Makefile.{am,in}
+%if 0%{?_unitdir:1}
+sed -i 's@/\$(libdir)/systemd/system@%{_unitdir}@g' etc/Makefile.{am,in}
+%endif
 
 %build
 %configure --enable-systemd=%{systemd}
@@ -66,6 +74,9 @@ make %{?_smp_mflags}
 %endif
 
 %changelog
+* Sun Jul 16 2017 selurvedu <selurvedu@yandex.com> 0.4.4-3
+- Fix a compilation issue with GCC >= 5.
+- Use the default system dir for systemd unit files, if available.
 * Fri Dec 18 2015 selurvedu <selurvedu@yandex.com> 0.4.4-2
 - Support RHEL/CentOS 6 (the oldest version with libudev)
 - Don't make a usual unit (devmon.service)
