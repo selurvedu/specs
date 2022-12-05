@@ -60,11 +60,11 @@ install -Dm 0755 bin/%{name} %{buildroot}%{_bindir}/%{name}
 %{_bindir}/%{name}
 
 %changelog
-* Wed Jan 20 2016 selurvedu <selurvedu@yandex.com> 2.0.0-3
+* Wed Jan 20 2016 selurvedu <selurvedu@users.noreply.github.com> 2.0.0-3
 - Add "perl(Getopt::Long)" and "python" to build deps
 - Update %files section to support RHEL 6
 
-* Wed Jan 13 2016 selurvedu <selurvedu@yandex.com> 2.0.0-2
+* Wed Jan 13 2016 selurvedu <selurvedu@users.noreply.github.com> 2.0.0-2
 - Reformat and reorder spec header and description,
   add "URL", remove "Packager"
 - Use "--jobs" in "build" section

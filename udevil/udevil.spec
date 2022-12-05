@@ -74,10 +74,10 @@ make %{?_smp_mflags}
 %endif
 
 %changelog
-* Sun Jul 16 2017 selurvedu <selurvedu@yandex.com> 0.4.4-3
+* Sun Jul 16 2017 selurvedu <selurvedu@users.noreply.github.com> 0.4.4-3
 - Fix a compilation issue with GCC >= 5.
 - Use the default system dir for systemd unit files, if available.
-* Fri Dec 18 2015 selurvedu <selurvedu@yandex.com> 0.4.4-2
+* Fri Dec 18 2015 selurvedu <selurvedu@users.noreply.github.com> 0.4.4-2
 - Support RHEL/CentOS 6 (the oldest version with libudev)
 - Don't make a usual unit (devmon.service)
   from instantiated unit (devmon@.service)

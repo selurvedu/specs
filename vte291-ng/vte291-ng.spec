@@ -124,10 +124,10 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_sysconfdir}/profile.d/vte.sh
 
 %changelog
-* Wed Jul 20 2016 selurvedu <selurvedu@yandex.com> - 0.44.2+ng-2
+* Wed Jul 20 2016 selurvedu <selurvedu@users.noreply.github.com> - 0.44.2+ng-2
 - Add compatibility patch for broken ABI in Fedora 22 and 23
 
-* Sat Jul 16 2016 selurvedu <selurvedu@yandex.com> - 0.44.2+ng-1
+* Sat Jul 16 2016 selurvedu <selurvedu@users.noreply.github.com> - 0.44.2+ng-1
 - Update expose_select_text.patch to be compatible with vte 0.44.2
   Source: vte-ng 0.44.1b (df5bb2ca5edca23f7a8508f5de63331d85e83907)
 
@@ -170,7 +170,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 - Update to 0.42.3
 - Backport upstream patch to fix disappearing lines (GNOME #761097)
 
-* Tue Jan 19 2016 selurvedu <selurvedu@yandex.com> - 0.42.1+ng-1
+* Tue Jan 19 2016 selurvedu <selurvedu@users.noreply.github.com> - 0.42.1+ng-1
 - Rename vte291 to vte291-ng
 - Add expose_select_text.patch
   Source: vte-ng 0.42.1 (ff40e5dafa83a4bb394ee755e1a48922d32a3ca3)
